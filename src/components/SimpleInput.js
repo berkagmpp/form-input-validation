@@ -10,12 +10,21 @@ const SimpleInput = (props) => {
         setEnteredName(event.target.value);
     };
 
+    const nameInputBlurHandler = event => {
+        setEnteredNameTouched(true);
+
+        if (enteredName.trim() === '' || enteredName.trim().length === 0) {
+            setEnteredNameIsValid(false);
+            return;
+        }
+    };
+
     const formSubmissionHandler = event => {
         event.preventDefault();     // we don't want to reload, restart the app and loose state!
 
         setEnteredNameTouched(true);
 
-        if(enteredName.trim() === '' || enteredName.trim().length === 0) {
+        if (enteredName.trim() === '' || enteredName.trim().length === 0) {
             setEnteredNameIsValid(false);
             return;
         }
@@ -38,6 +47,7 @@ const SimpleInput = (props) => {
                        type='text' 
                        id='name' 
                        onChange={nameInputChangeHandler} 
+                       onBlur={nameInputBlurHandler} 
                        value={enteredName} />
                 {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
             </div>
