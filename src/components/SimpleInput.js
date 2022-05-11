@@ -1,14 +1,18 @@
 import { useState } from "react";
 
+import useInput from "../hooks/use-input";
+
 const SimpleInput = (props) => {
-    const [enteredName, setEnteredName] = useState('');
-    const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+    const { value: enteredName,
+            IsValid: enteredNameIsValid,
+            hasError: nameInputHasError, 
+            valueChangeHandler: nameChangeHandler, 
+            inputBlurHandler: nameBlurHandler,
+            reset: nameReset
+    } = useInput((value) => value.trim() !== '');   // not excuted, just defined here and pass to validateValue parameter of useInput() in use-input.js
 
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
-    const enteredNameIsValid = enteredName.trim() !== '' && enteredName.trim().length !== 0;
-    const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
     const enteredEmailIsValid = enteredEmail.includes('@');
     const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
@@ -17,14 +21,6 @@ const SimpleInput = (props) => {
 
     if (enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
-    };
-
-    const nameInputChangeHandler = event => {
-        setEnteredName(event.target.value);
-    };
-
-    const nameInputBlurHandler = event => {
-        setEnteredNameTouched(true);
     };
 
     const emailInputChangeHandler = event => {
@@ -38,7 +34,6 @@ const SimpleInput = (props) => {
     const formSubmissionHandler = event => {
         event.preventDefault();     // we don't want to reload, restart the app and loose state!
 
-        setEnteredNameTouched(true);
         setEnteredEmailTouched(true);
 
         if (!enteredNameIsValid || !enteredEmailIsValid) {
@@ -48,14 +43,13 @@ const SimpleInput = (props) => {
         console.log(enteredName);
         console.log(enteredEmail);
 
-        setEnteredName('');     // this, useState() is ideal then useRef()(nameInputRef.current.value = '';) for cleaning becouse useRef() directly manipulate DOM
-        setEnteredNameTouched(false);
+        nameReset();
 
         setEnteredEmail('');
         setEnteredEmailTouched(false);
     };
         
-    const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control';
+    const nameInputClasses = nameInputHasError ? 'form-control invalid' : 'form-control';
     const emailInputClasses = emailInputIsInvalid ? 'form-control invalid' : 'form-control';
 
     return (
@@ -64,10 +58,10 @@ const SimpleInput = (props) => {
                 <label htmlFor='name'>Your Name</label>
                 <input type='text' 
                     id='name' 
-                    onChange={nameInputChangeHandler} 
-                    onBlur={nameInputBlurHandler} 
+                    onChange={nameChangeHandler} 
+                    onBlur={nameBlurHandler} 
                     value={enteredName} />
-                {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
+                {nameInputHasError && <p className="error-text">Name must not be empty.</p>}
             </div>
             <div className={emailInputClasses}>
                 <label htmlFor='email'>Your Email</label>
