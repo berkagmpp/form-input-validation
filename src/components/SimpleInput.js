@@ -4,18 +4,18 @@ const SimpleInput = (props) => {
     const [enteredName, setEnteredName] = useState('');
     const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
-    const [enteredAge, setEnteredAge] = useState('');
-    const [enteredAgeTouched, setEnteredAgeTouched] = useState(false);
+    const [enteredEmail, setEnteredEmail] = useState('');
+    const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
 
     const enteredNameIsValid = enteredName.trim() !== '' && enteredName.trim().length !== 0;
     const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-    const enteredAgeIsValid = enteredAge.trim() !== '' && enteredAge.trim().length !== 0 && enteredAge > 0;
-    const ageInputIsInvalid = !enteredAgeIsValid && enteredAgeTouched;
+    const enteredEmailIsValid = enteredEmail.includes('@');
+    const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
 
     let formIsValid = false;
 
-    if (enteredNameIsValid && enteredAgeIsValid) {
+    if (enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
     };
 
@@ -27,35 +27,36 @@ const SimpleInput = (props) => {
         setEnteredNameTouched(true);
     };
 
-    const ageInputChangeHandler = event => {
-        setEnteredAge(event.target.value);
+    const emailInputChangeHandler = event => {
+        setEnteredEmail(event.target.value);
     };
 
-    const ageInputBlurHandler = event => {
-        setEnteredAgeTouched(true);
+    const emailInputBlurHandler = event => {
+        setEnteredEmailTouched(true);
     };
 
     const formSubmissionHandler = event => {
         event.preventDefault();     // we don't want to reload, restart the app and loose state!
 
         setEnteredNameTouched(true);
-        setEnteredAgeTouched(true);
+        setEnteredEmailTouched(true);
 
-        if (!enteredNameIsValid || !enteredAgeIsValid) {
+        if (!enteredNameIsValid || !enteredEmailIsValid) {
             return;
         }
 
         console.log(enteredName);
-        console.log(enteredAge);
+        console.log(enteredEmail);
 
         setEnteredName('');     // this, useState() is ideal then useRef()(nameInputRef.current.value = '';) for cleaning becouse useRef() directly manipulate DOM
         setEnteredNameTouched(false);
-        setEnteredAge('');
-        setEnteredAgeTouched(false);
+
+        setEnteredEmail('');
+        setEnteredEmailTouched(false);
     };
         
     const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control';
-    const ageInputClasses = ageInputIsInvalid ? 'form-control invalid' : 'form-control';
+    const emailInputClasses = emailInputIsInvalid ? 'form-control invalid' : 'form-control';
 
     return (
         <form onSubmit={formSubmissionHandler}>
@@ -68,14 +69,14 @@ const SimpleInput = (props) => {
                     value={enteredName} />
                 {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
             </div>
-            <div className={ageInputClasses}>
-                <label htmlFor='age'>Your Age</label>
-                <input type='number' 
-                        id='age' 
-                        onChange={ageInputChangeHandler} 
-                        onBlur={ageInputBlurHandler} 
-                        value={enteredAge} />
-                {ageInputIsInvalid && <p className="error-text">Age must not be empty and greater then 0.</p>}
+            <div className={emailInputClasses}>
+                <label htmlFor='email'>Your Email</label>
+                <input type='email' 
+                        id='email' 
+                        onChange={emailInputChangeHandler} 
+                        onBlur={emailInputBlurHandler} 
+                        value={enteredEmail} />
+                {emailInputIsInvalid && <p className="error-text">Please enter correct Email adress.</p>}
             </div>
             <div className="form-actions">
                 <button disabled={!formIsValid}>Submit</button>
