@@ -4,18 +4,17 @@ const useInputValidation = valueValidate => {
     const [enteredValue, setEnteredValue] = useState('');
     const [valueIsTouched, setValueIsTouched] = useState(false);
 
+    const valueIsValid = valueValidate(enteredValue);
+    const hasError = !valueIsValid && valueIsTouched;
+    const valueErrorStyle = hasError ? 'form-control invalid' : 'form-control';
+
     const valueChangeHandler = event => {
         setEnteredValue(event.target.value);
-        setValueIsTouched(true);
     }
 
     const valueBlurHandler = () => {
         setValueIsTouched(true);
     };
-
-    const valueIsValid = valueValidate(enteredValue) && valueIsTouched;
-
-    const valueErrorStyle = valueIsTouched && !valueIsValid ? 'form-control invalid' : 'form-control';
 
     const valueReset = () => {
         setEnteredValue('');
@@ -24,11 +23,11 @@ const useInputValidation = valueValidate => {
 
     return {
         value: enteredValue,
-        IsTouched: valueIsTouched,
+        valueIsValid,
+        hasError,
+        valueErrorStyle,
         valueChangeHandler,
         valueBlurHandler,
-        valueIsValid,
-        valueErrorStyle,
         valueReset
     };
 };

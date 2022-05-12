@@ -5,34 +5,34 @@ import '../index.css';
 const isNotEmpty = value => value.trim() != '';
 const isIncludeEmail = value => value.includes('@');
 
-const BasicForm = (props) => {
+const BasicForm = () => {
     const {
         value: enteredfName,
-        IsTouched: fnameIsTouched,
+        valueIsValid: fnameIsValid,
+        hasError: fnameHasError,
+        valueErrorStyle: fnameErrorStyle,
         valueChangeHandler: fnameChangeHandler,
         valueBlurHandler: fnameBlurHandler,
-        valueIsValid: fnameIsValid,
-        valueErrorStyle: fnameErrorStyle,
         valueReset: fnameReset
     } = useInputValidation(isNotEmpty);
 
     const {
         value: enteredlName,
-        IsTouched: lnameIsTouched,
+        valueIsValid: lnameIsValid,
+        hasError: lnameHasError,
+        valueErrorStyle: lnameErrorStyle,
         valueChangeHandler: lnameChangeHandler,
         valueBlurHandler: lnameBlurHandler,
-        valueIsValid: lnameIsValid,
-        valueErrorStyle: lnameErrorStyle,
         valueReset: lnameReset
     } = useInputValidation(isNotEmpty);
 
     const {
         value: enteredEmail,
-        IsTouched: emailIsTouched,
+        valueIsValid: emailIsValid,
+        hasError: emailHasError,
+        valueErrorStyle: emailErrorStyle,
         valueChangeHandler: emailChangeHandler,
         valueBlurHandler: emailBlurHandler,
-        valueIsValid: emailIsValid,
-        valueErrorStyle: emailErrorStyle,
         valueReset: emailReset
     } = useInputValidation(isIncludeEmail);
 
@@ -64,7 +64,7 @@ const BasicForm = (props) => {
                            onBlur={fnameBlurHandler}
                            type='text' 
                            id='fname' />
-                    {fnameIsTouched && !fnameIsValid && <p className="error-text">'First name must be entered.'</p>}
+                    {fnameHasError && <p className="error-text">'First name must be entered.'</p>}
                 </div>
                 <div className={lnameErrorStyle}>
                     <label htmlFor='lname'>Last Name</label>
@@ -73,7 +73,7 @@ const BasicForm = (props) => {
                            onBlur={lnameBlurHandler}
                            type='text' 
                            id='lname' />
-                    {lnameIsTouched && !lnameIsValid && <p className="error-text">'Last name must be entered.'</p>}
+                    {lnameHasError && <p className="error-text">'Last name must be entered.'</p>}
                 </div>
             </div>
             <div className={emailErrorStyle}>
@@ -83,7 +83,7 @@ const BasicForm = (props) => {
                        onBlur={emailBlurHandler}
                        type='text' 
                        id='email' />
-                       {emailIsTouched && !emailIsValid && <p className="error-text">'Email must include @.'</p>}
+                       {emailHasError && <p className="error-text">'Email must include @.'</p>}
             </div>
             <div className='form-actions'>
                 <button disabled={!formIsValid}>Submit</button>
