@@ -2,6 +2,9 @@ import useInputValidation from '../hooks/use-input-validation';
 
 import '../index.css';
 
+const isNotEmpty = value => value.trim() != '';
+const isIncludeEmail = value => value.includes('@');
+
 const BasicForm = (props) => {
     const {
         value: enteredfName,
@@ -11,7 +14,7 @@ const BasicForm = (props) => {
         valueIsValid: fnameIsValid,
         valueErrorStyle: fnameErrorStyle,
         valueReset: fnameReset
-    } = useInputValidation(value => value.trim() != '');
+    } = useInputValidation(isNotEmpty);
 
     const {
         value: enteredlName,
@@ -21,7 +24,7 @@ const BasicForm = (props) => {
         valueIsValid: lnameIsValid,
         valueErrorStyle: lnameErrorStyle,
         valueReset: lnameReset
-    } = useInputValidation(value => value.trim() != '');
+    } = useInputValidation(isNotEmpty);
 
     const {
         value: enteredEmail,
@@ -31,20 +34,21 @@ const BasicForm = (props) => {
         valueIsValid: emailIsValid,
         valueErrorStyle: emailErrorStyle,
         valueReset: emailReset
-    } = useInputValidation(value => value.includes('@'));
+    } = useInputValidation(isIncludeEmail);
 
     const formIsValid = fnameIsValid && lnameIsValid && emailIsValid;
 
     const formSubmitHandler = event => {
         event.preventDefault();
 
-        if (!fnameIsValid || !lnameIsValid || !emailIsValid) {
+        if (!formIsValid) {
             return;
         }
 
         console.log(enteredfName);
         console.log(enteredlName);
         console.log(enteredEmail);
+
         fnameReset();
         lnameReset();
         emailReset();
