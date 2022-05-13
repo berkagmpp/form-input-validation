@@ -17,5 +17,4 @@
 - After meeting all conditions, users press the 'Submit' button, which is activated, user's entered data is displayed in the console.
 
 ### Preview
-<a href="#"><img src="https://user-images.githubusercontent.com/84049077/168191736-37ad4668-da56-4ac4-8b38-72f736a12dd4.gif)
--b632f71b9589.jpg"/></a>
+<a href="#"><img src="https://user-images.githubusercontent.com/84049077/168191736-37ad4668-da56-4ac4-8b38-72f736a12dd4.gif"/></a>
